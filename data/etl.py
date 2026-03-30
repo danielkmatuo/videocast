@@ -149,6 +149,3 @@ def fetch_raw_data():
     print("Data fetched successfully!")
 
     return
-
-def run_etl():
-    fetch_raw_data()

@@ -1,6 +1,10 @@
 import pandas as pd
 import os
 
+#TODO: Fix the path names with from pathlib import Path
+
+# NOTE: Game-category mapping is currently hardcoded for simplicity.
+# In a production scenario, this would be externalized (e.g., CSV or database).
 def join_data():
     cwd = os.getcwd()
     files = os.listdir(path=cwd + "\\data\\raw")
@@ -11,7 +15,7 @@ def join_data():
         "children_of_morta": "roguelike",
         "cs2": "shooter",
         "darkest_dungeon": "roguelike",
-        "dead_cells": "rogue_like",
+        "dead_cells": "roguelike",
         "destiny_2": "shooter",
         "divinity_2": "rpg",
         "ds3": "rpg",
