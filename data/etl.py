@@ -9,6 +9,10 @@ def fetch_raw_data():
     
     folder_path = "data/raw"
 
+    if not os.path.exists(folder_path):
+        os.makedirs(folder_path)
+        print("Created folder:", folder_path)
+
     if os.path.exists(folder_path) and os.listdir(folder_path):
         print("Data already exists, skipping ingestion phase...")
         return
