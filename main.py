@@ -14,6 +14,7 @@ def main():
     date_norm_df = normalize_dates(preprocessed_df)
     num_norm_df = normalize_num_data(date_norm_df)
 
+    #buckets separation by release year
     release_date_df = get_release_date(num_norm_df)
     year_buckets_df = separate_buckets(release_date_df)
     players_by_bucket_df = sum_players_by_bucket(year_buckets_df)
