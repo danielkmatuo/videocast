@@ -60,7 +60,7 @@ def fetch_raw_data():
         "expedition_33": "1903340"
     }
     
-    root_url = os.getenv("url")
+    root_url = "https://steamcharts.com/app/"
 
     headers = {
         "User-Agent": "Mozilla/5.0"
