@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import pandas as pd
+import statsmodels.tsa.seasonal as tsa
 from datetime import datetime
 import calendar
 
@@ -72,19 +73,24 @@ def normalize_num_data(df: pd.DataFrame):
     return temp_df
 
 def get_release_date(df: pd.DataFrame):
-    df["release_date"] = df.groupby("game_id")["month"].transform("min")
+    temp_df = df.copy()
+    temp_df["release_date"] = df.groupby("game_id")["month"].transform("min")
 
-    return df
+    return temp_df
 
 def separate_buckets(df: pd.DataFrame):
-    year_buckets_s = df["release_date"].apply(lambda x: return_datetime(x).year)
+    temp_df = df.copy()
+    
+    year_buckets_s = temp_df["release_date"].apply(lambda x: return_datetime(x).year)
 
-    df["year_bucket"] = year_buckets_s
+    temp_df["year_bucket"] = year_buckets_s
 
-    return df
+    return temp_df
 
 def sum_players_by_bucket(df):
-    return df.groupby(["year_bucket", "month"])[["avg_players", "peak_players"]].agg("sum")
+    temp_df = df.copy()
+    
+    return temp_df.groupby(["year_bucket", "month"])[["avg_players", "peak_players"]].agg("sum")
 
 def plot_general_trend_per_bucket(df: pd.DataFrame, bucket: int):
     try:
@@ -101,4 +107,56 @@ def plot_general_trend_per_bucket(df: pd.DataFrame, bucket: int):
     plt.ylabel("Players")
     plt.title("Trend per Year Bucket")
     plt.show()
+    plt.show()
+
+def group_by_category(df: pd.DataFrame):
+    temp_df = df.copy()
+
+    category_grouped = temp_df.groupby(["category", "month"])[["avg_players", "peak_players"]].agg("sum")
+
+    return category_grouped
+
+def plot_by_category(df: pd.DataFrame, category: str):
+    try:
+        subset = df.loc[category]
+    except KeyError as e:
+        print(f"Invalid category ({e})")
+        return
+
+    plt.plot(subset.index, subset["avg_players"], label=f"{category} avg", color="blue")
+    plt.plot(subset.index, subset["peak_players"], label=f"{category} peak", color="green")
+
+    plt.legend()
+    plt.xlabel("Month")
+    plt.ylabel("Players")
+    plt.title(f"{category} Trend per Month")
+    plt.show()
+    plt.show()
+
+def decompose_time_series_per_bucket(df: pd.DataFrame, bucket: int):
+    try:
+        subset = df.loc[bucket]
+    except KeyError as e:
+        print(f"Invalid year ({e})")
+        return
+    
+    print(f"Decomposing avg_players data for {bucket}")
+    decompose = tsa.seasonal_decompose(x=subset["avg_players"], model="additive", period=12)
+
+    decompose.plot()
+
+    plt.show()
+
+def decompose_timeseries_per_category(df: pd.DataFrame, category: str): 
+    try:
+        subset = df.loc[category]
+    except KeyError as e:
+        print(f"Invalid category ({e})")
+        return
+    
+    print(f"Decomposing avg_players data for {category}")
+    decompose = tsa.seasonal_decompose(x=subset["avg_players"], model="additive", period=12)
+
+    decompose.plot()
+
     plt.show()

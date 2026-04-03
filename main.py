@@ -21,7 +21,16 @@ def main():
     
     #EDA - Ploting
     #General plot by bucket
-    plot_general_trend_per_bucket(players_by_bucket_df, bucket=2023) #bucket param can go from 2012 to 2025
+    plot_general_trend_per_bucket(players_by_bucket_df, bucket=2013) #bucket param can go from 2012 to 2025
+
+    decompose_time_series_per_bucket(df=players_by_bucket_df, bucket=2013)
+
+    #Ploting by category
+    category_grouped_df = group_by_category(num_norm_df)
+
+    plot_by_category(df=category_grouped_df, category="rpg") #category param can be ["shooter", "roguelike", "rpg"]
+
+    decompose_timeseries_per_category(df=category_grouped_df, category="rpg")
 
 if __name__ == "__main__":
     main()
