@@ -21,16 +21,21 @@ def main():
     
     #EDA - Ploting
     #General plot by bucket
-    plot_general_trend_per_bucket(players_by_bucket_df, bucket=2013) #bucket param can go from 2012 to 2025
+    plot_general_trend_per_bucket(df=year_buckets_df, agg_df=players_by_bucket_df)
+    acf_plot_per_bucket(df=year_buckets_df, agg_df=players_by_bucket_df)
 
-    decompose_time_series_per_bucket(df=players_by_bucket_df, bucket=2013)
+    bucket_decompose(df=players_by_bucket_df, bucket=2013)
 
     #Ploting by category
-    category_grouped_df = group_by_category(num_norm_df)
+    category_grouped_df = group_by_category(year_buckets_df)
 
-    plot_by_category(df=category_grouped_df, category="rpg") #category param can be ["shooter", "roguelike", "rpg"]
+    plot_by_category(df=category_grouped_df)
+    acf_plot_per_category(df=category_grouped_df)
 
-    decompose_timeseries_per_category(df=category_grouped_df, category="rpg")
+    category_decompose(df=category_grouped_df, category="rpg", bucket=2013)
+
+    #EDA - Market share feature exploration
+    share_df_per_bucket = calculate_share(df=year_buckets_df, bucket=2015)
 
 if __name__ == "__main__":
     main()
